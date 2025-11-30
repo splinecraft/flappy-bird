@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=3 uid="uid://cn0ha0iijqhow"]
+
+[ext_resource type="Texture2D" uid="uid://bu2f47nqnm5pg" path="res://assets/bird.png" id="1_vlsva"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m3kn2"]
+atlas = ExtResource("1_vlsva")
+region = Rect2(12, 0, 12, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ahej0"]
+atlas = ExtResource("1_vlsva")
+region = Rect2(0, 0, 12, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p6c21"]
+atlas = ExtResource("1_vlsva")
+region = Rect2(24, 0, 12, 10)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_uybah"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m3kn2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ahej0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p6c21")
+}],
+"loop": true,
+"name": &"flap_wings",
+"speed": 12.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_maxgs"]
+radius = 27.45906
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(-6, 3)
+scale = Vector2(6, 6)
+sprite_frames = SubResource("SpriteFrames_uybah")
+animation = &"flap_wings"
+autoplay = "flap_wings"
+frame_progress = 0.21796805
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["player"]]
+position = Vector2(-6, 3)
+shape = SubResource("CircleShape2D_maxgs")
+
+[node name="StartTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 4096.0
+autostart = true

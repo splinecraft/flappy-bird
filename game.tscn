@@ -1,0 +1,62 @@
+[gd_scene load_steps=8 format=3 uid="uid://3tebkho712ni"]
+
+[ext_resource type="Script" uid="uid://b0j7okpckx1xe" path="res://game.gd" id="1_7jktm"]
+[ext_resource type="PackedScene" uid="uid://cn0ha0iijqhow" path="res://assets/player.tscn" id="1_80nbo"]
+[ext_resource type="Script" uid="uid://crlxwl52kaghc" path="res://assets/player.gd" id="2_e2o6t"]
+[ext_resource type="PackedScene" uid="uid://dppte7ssky762" path="res://assets/ui.tscn" id="4_7jktm"]
+[ext_resource type="PackedScene" uid="uid://bdknkvmms5pau" path="res://assets/global_score.tscn" id="5_ryrav"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e2o6t"]
+size = Vector2(478, 39)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ryrav"]
+size = Vector2(40, 695)
+
+[node name="Game" type="Node2D" node_paths=PackedStringArray("player", "ui")]
+script = ExtResource("1_7jktm")
+player = NodePath("Player")
+ui = NodePath("CanvasLayer/UI")
+
+[node name="Player" parent="." instance=ExtResource("1_80nbo")]
+position = Vector2(156, 241)
+collision_mask = 3
+script = ExtResource("2_e2o6t")
+rot_up_tuning = 6.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(240, 360)
+
+[node name="Ground" type="StaticBody2D" parent="." groups=["obstacles"]]
+position = Vector2(1, 681)
+collision_layer = 2
+
+[node name="ColorRect" type="ColorRect" parent="Ground"]
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(12, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+position = Vector2(240, 20.5)
+shape = SubResource("RectangleShape2D_e2o6t")
+
+[node name="PipeResetArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-187, 145)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PipeResetArea"]
+position = Vector2(-141, 218)
+shape = SubResource("RectangleShape2D_ryrav")
+
+[node name="PipeSpawnTimer" type="Timer" parent="."]
+wait_time = 1.6
+
+[node name="HighScore" parent="." instance=ExtResource("5_ryrav")]
+
+[node name="RestartTimer" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" parent="CanvasLayer" instance=ExtResource("4_7jktm")]
+
+[connection signal="timeout" from="RestartTimer" to="." method="_on_restart_timer_timeout"]

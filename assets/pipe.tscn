@@ -1,0 +1,63 @@
+[gd_scene load_steps=6 format=3 uid="uid://ck1vc061ab1af"]
+
+[ext_resource type="Script" uid="uid://gn5hfs4mbt6h" path="res://assets/pipe.gd" id="1_7qsf6"]
+[ext_resource type="Script" uid="uid://cs6g32mhrepbk" path="res://assets/score_area.gd" id="2_83jit"]
+[ext_resource type="Texture2D" uid="uid://c7bsxvelcm20w" path="res://content/pipe.png" id="3_y7eqn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ayb6a"]
+size = Vector2(121.5, 423.12482)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kqdpq"]
+size = Vector2(33, 205)
+
+[node name="Pipe" type="Area2D" groups=["obstacles"]]
+script = ExtResource("1_7qsf6")
+
+[node name="TopCollisionShape2D" type="CollisionShape2D" parent="." groups=["obstacles"]]
+position = Vector2(61.75, 22.125)
+scale = Vector2(1, 1.2000005)
+shape = SubResource("RectangleShape2D_ayb6a")
+
+[node name="BotCollisionShape2D" type="CollisionShape2D" parent="." groups=["obstacles"]]
+position = Vector2(61.75, 745.125)
+scale = Vector2(1, 1.2000005)
+shape = SubResource("RectangleShape2D_ayb6a")
+
+[node name="TopPipeSection" type="ColorRect" parent="."]
+visible = false
+offset_top = 488.0
+offset_right = 125.0
+offset_bottom = 915.0
+scale = Vector2(1, 1.2000005)
+color = Color(0.15952766, 0.443247, 0.08242393, 1)
+
+[node name="TopPipeSection2" type="ColorRect" parent="."]
+visible = false
+offset_top = -235.0
+offset_right = 125.0
+offset_bottom = 192.0
+scale = Vector2(1, 1.2000005)
+color = Color(0.15952766, 0.443247, 0.08242393, 1)
+
+[node name="ScoreArea2D" type="Area2D" parent="." groups=["score_area"]]
+unique_name_in_owner = true
+position = Vector2(0, 286)
+script = ExtResource("2_83jit")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScoreArea2D"]
+position = Vector2(16.5, 96.5)
+shape = SubResource("RectangleShape2D_kqdpq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(62, 15)
+texture = ExtResource("3_y7eqn")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(61, 750)
+rotation = 3.1415927
+texture = ExtResource("3_y7eqn")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_entered" from="ScoreArea2D" to="." method="_on_score_body_entered"]
