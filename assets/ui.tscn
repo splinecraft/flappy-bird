@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://yrcm2n0kmsep" path="res://content/game_over.png" id="3_rvqgq"]
 
 [sub_resource type="SystemFont" id="SystemFont_ohefe"]
+subpixel_positioning = 0
 
 [node name="UI" type="Control"]
 layout_mode = 3

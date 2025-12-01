@@ -1,6 +1,5 @@
 extends Control
 
-
 @onready var game_over: Control = %GameOver
 @onready var high_score_display: RichTextLabel = %HighScoreDisplay
 @onready var score_label: RichTextLabel = %ScoreLabel
@@ -8,14 +7,11 @@ extends Control
 @onready var dead: Sprite2D = %Dead
 
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	high_score_display.text = str(GlobalScore.high_score)
 	
 func _on_game_start():
 	game_over.hide()
-	
 
 func _on_game_ready():
 	dead.hide()

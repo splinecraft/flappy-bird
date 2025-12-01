@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://3tebkho712ni"]
+[gd_scene load_steps=35 format=3 uid="uid://3tebkho712ni"]
 
 [ext_resource type="Script" uid="uid://b0j7okpckx1xe" path="res://game.gd" id="1_7jktm"]
 [ext_resource type="PackedScene" uid="uid://cn0ha0iijqhow" path="res://assets/player.tscn" id="1_80nbo"]
@@ -12,6 +12,13 @@
 [ext_resource type="Texture2D" uid="uid://bfq4dx8ew2lp" path="res://content/bg_green.png" id="9_hve3p"]
 [ext_resource type="AudioStream" uid="uid://dto0cd8goppg0" path="res://content/flappy_bird_music.ogg" id="10_hve3p"]
 [ext_resource type="AudioStream" uid="uid://5eptag0lbj7y" path="res://content/goal_passed.ogg" id="11_mfdv2"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_lc2xo"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_215e1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e2o6t"]
+size = Vector2(638, 39)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ryrav"]
 size = Vector2(40, 695)
@@ -148,15 +155,21 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_lc2xo"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_iotsf"]
-
 [node name="Game" type="Node2D" node_paths=PackedStringArray("player", "ui", "killzone")]
 script = ExtResource("1_7jktm")
 player = NodePath("Player")
 ui = NodePath("CanvasLayer/UI")
 killzone = NodePath("Killzone")
+
+[node name="Killzone" parent="." instance=ExtResource("2_iotsf")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
+position = Vector2(0, 663)
+shape = SubResource("WorldBoundaryShape2D_lc2xo")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Killzone"]
+rotation = -3.1415927
+shape = SubResource("WorldBoundaryShape2D_215e1")
 
 [node name="Player" parent="." instance=ExtResource("1_80nbo")]
 position = Vector2(156, 241)
@@ -166,6 +179,14 @@ rot_up_tuning = 6.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(240, 360)
+
+[node name="Ground" type="StaticBody2D" parent="." groups=["obstacles"]]
+position = Vector2(1, 681)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+position = Vector2(320, 20.5)
+shape = SubResource("RectangleShape2D_e2o6t")
 
 [node name="PipeResetArea" type="Area2D" parent="."]
 unique_name_in_owner = true
@@ -226,17 +247,5 @@ parameters/looping = true
 
 [node name="GoalAudio" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("11_mfdv2")
-
-[node name="Killzone" parent="." instance=ExtResource("2_iotsf")]
-
-[node name="TopCollisionShape2D2" type="CollisionShape2D" parent="Killzone"]
-position = Vector2(404, -7)
-scale = Vector2(65.84, 1)
-shape = SubResource("RectangleShape2D_lc2xo")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
-position = Vector2(296, 674)
-scale = Vector2(60, 1)
-shape = SubResource("RectangleShape2D_iotsf")
 
 [connection signal="timeout" from="RestartTimer" to="." method="_on_restart_timer_timeout"]

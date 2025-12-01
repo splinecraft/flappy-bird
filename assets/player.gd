@@ -7,7 +7,6 @@ extends CharacterBody2D
 @export var rot_down_max: float = 60.0
 @export var rot_down_tuning: float = 1.0
 
-
 var rot_tuning
 var target_angle
 var input_enabled := true
@@ -18,16 +17,14 @@ var game_in_progress := false
 @onready var animation = player.get_node("AnimatedSprite2D")
 @onready var game_manager = get_tree().current_scene
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready() -> void:
 	game_in_progress = false
 	
 func _on_game_over() -> void:
-	print("BIRD GAME OVER")
 	input_enabled = false
 	animation.stop()
 	game_in_progress = false
-
 
 func _physics_process(delta: float) -> void:
 	if not input_enabled:
@@ -38,7 +35,7 @@ func _physics_process(delta: float) -> void:
 		
 		if Input.is_action_just_pressed("flap"):
 			velocity.y = jump_strength
-			
+		# rotation	
 		if velocity.y < 0:
 			target_angle = deg_to_rad(rot_up_max)
 			rot_tuning = rot_up_tuning
@@ -47,7 +44,6 @@ func _physics_process(delta: float) -> void:
 			rot_tuning = rot_down_tuning
 			
 		rotation = lerp_angle(rotation, target_angle, rot_tuning * delta)
-		
 		move_and_slide()
 	else:
 		velocity.y = 0
@@ -57,8 +53,8 @@ func _initial_tap() -> void:
 		start_timer.stop()
 		game_in_progress = true
 		game_manager._on_game_start()
-	
 
+#listen for game start from input
 func _input(event: InputEvent) -> void:
 	if (event is InputEventMouseButton and event.pressed) \
 	or Input.is_action_just_pressed("flap"):
